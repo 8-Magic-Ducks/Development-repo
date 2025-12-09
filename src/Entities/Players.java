@@ -498,7 +498,7 @@ public class Players {
     public int getTextureID() { return textureID; }
     public void setTextureID(int textureID) { this.textureID = textureID; }
 
-    // ==================== UTILITY METHODS ====================
+    // =======c============= UTILITY METHODS ====================
 
     /**
      * Reset soldier to default state

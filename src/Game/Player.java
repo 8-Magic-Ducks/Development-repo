@@ -336,7 +336,7 @@ public class Player extends Players {
     public int getSoldiersPlaced() {
         return soldiersPlaced;
     }
-
+//
     /**
      * Check if all soldiers are placed
      */

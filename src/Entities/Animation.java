@@ -5,7 +5,7 @@ import javax.media.opengl.GL;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+//
 /**
  * Handles sprite animations for duck soldiers
  * Manages different animation states (idle, moving forward, backward, left, right)
