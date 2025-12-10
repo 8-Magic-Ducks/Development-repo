@@ -13,9 +13,7 @@ public class InputHandler implements MouseListener, MouseMotionListener {
         this.ducks = ducks;
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
-
         int mouseX = e.getX();
         int mouseY = e.getY();
 
@@ -23,7 +21,6 @@ public class InputHandler implements MouseListener, MouseMotionListener {
         int gridY = (600 - mouseY) / 50;
 
         for (Tile duck : ducks) {
-
             if (duck.getX() == gridX && duck.getY() == gridY) {
                 selectedDuck = duck;
                 duck.setHighlighted(true);
@@ -32,20 +29,17 @@ public class InputHandler implements MouseListener, MouseMotionListener {
         }
     }
 
-    @Override
     public void mouseDragged(MouseEvent e) {
         if (selectedDuck != null) {
             int gridX = e.getX() / 50;
             int gridY = (600 - e.getY()) / 50;
-
-            if (gridX >= 0 && gridX < 8 && gridY >= 0 && gridY < 8) {
+            if (gridX >= 0 && gridX < 16 && gridY >= 0 && gridY < 8) {
                 selectedDuck.setX(gridX);
                 selectedDuck.setY(gridY);
             }
         }
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         if (selectedDuck != null) {
             selectedDuck.setHighlighted(false);

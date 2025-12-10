@@ -7,9 +7,7 @@ public class Collision {
 
     public static boolean isAttacked(Tile target, List<Tile> ducks) {
         for (Tile duck : ducks) {
-
             if (duck == target) continue;
-
             if (checkRow(target, duck) ||
                     checkColumn(target, duck) ||
                     checkDiagonal(target, duck)) {
@@ -17,6 +15,15 @@ public class Collision {
             }
         }
         return false;
+    }
+    public static boolean isBoardSolved(List<Tile> ducks) {
+        if (ducks.isEmpty()) return false;
+        for (Tile duck : ducks) {
+            if (isAttacked(duck, ducks)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean checkRow(Tile t1, Tile t2) {
