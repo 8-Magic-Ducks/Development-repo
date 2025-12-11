@@ -21,7 +21,7 @@ public class Board extends JFrame {
 
     private ImageIcon iconPlay, iconExit, iconMenu;
     private ImageIcon iconOnePlayer, iconTwoPlayers, iconPlayerVSAI;
-    private ImageIcon iconPause, iconStart;
+    private ImageIcon iconPause, iconStart, mode;
 
     public static void main(String[] args) {
         System.setProperty("sun.java2d.uiScale", "1.0");
@@ -41,13 +41,13 @@ public class Board extends JFrame {
         try {
             bgStartScreen = ImageIO.read(new File("src//Assets//Background//3.png"));
             bgModeScreen = ImageIO.read(new File("src//Assets//Background//2.png"));
-
+           mode =
 
             iconPlay = resizeIcon("src//Assets//Buttons//play_btn.png", 200, 60);
             iconExit = resizeIcon("src//Assets//Buttons//exit_btn.png", 200, 60);
             iconMenu = resizeIcon("src//Assets//Buttons//menu_btn.png", 200, 60);
 
-
+            mode = resizeIcon("src//Assets//Buttons//GameMode.png", 300, 150);
             iconOnePlayer = resizeIcon("src//Assets//Buttons//oneP.png", 300, 90);
             iconTwoPlayers = resizeIcon("src//Assets//Buttons//twoP.png", 300, 90);
             iconPlayerVSAI = resizeIcon("src//Assets//Buttons//VS.png", 300, 90);
@@ -112,6 +112,10 @@ public class Board extends JFrame {
         makeButtonTransparent(btnExit);
         btnExit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JButton btnMenu = new JButton(iconMenu);
+        makeButtonTransparent(btnMenu);
+        btnMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         btnExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Sound.playClick();
@@ -121,6 +125,7 @@ public class Board extends JFrame {
 
         startPanel.add(btnPlay);
         startPanel.add(Box.createVerticalStrut(20));
+        startPanel.add(btnMenu);
         startPanel.add(btnExit);
 
         contentPane.add(startPanel, BorderLayout.CENTER);
@@ -145,11 +150,10 @@ public class Board extends JFrame {
 
         modePanel.add(Box.createVerticalStrut(100));
 
-        JLabel title = new JLabel("Select Game Mode");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("Arial", Font.BOLD, 28));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        modePanel.add(title);
+        JLabel titleImage = new JLabel(mode);
+        titleImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        modePanel.add(titleImage);
+
         modePanel.add(Box.createVerticalStrut(30));
 
         JButton btnOnePlayer = new JButton(iconOnePlayer);
