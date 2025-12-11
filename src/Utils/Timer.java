@@ -1,7 +1,6 @@
 package Utils;
 
 public class Timer {
-
     private long startTime;
     private long duration;
     private boolean isRunning;
@@ -31,10 +30,5 @@ public class Timer {
         long elapsed = System.currentTimeMillis() - startTime;
         long remaining = duration - elapsed;
         return Math.max(0, remaining);
-    }
-
-    public String getTimeString() {
-        long rem = getRemaining() / 1000;
-        return String.format("%02d:%02d", rem / 60, rem % 60);
     }
 }

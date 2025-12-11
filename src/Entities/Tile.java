@@ -3,7 +3,6 @@ package Entities;
 import javax.media.opengl.GL;
 
 public class Tile {
-
     private int x;
     private int y;
     private int texture;
@@ -34,9 +33,7 @@ public class Tile {
 
     public void draw(GL gl) {
         gl.glPushMatrix();
-
         gl.glTranslatef(x * 50, y * 50, 0);
-
         if (isHighlighted) {
             gl.glColor3f(1.0f, 1.0f, 0.0f);
         } else if (!isSafe) {
@@ -46,8 +43,8 @@ public class Tile {
         }
 
         if (texture != -1) {
-            gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
             gl.glEnable(GL.GL_TEXTURE_2D);
+            gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 
             gl.glBegin(GL.GL_QUADS);
             gl.glTexCoord2f(0, 0); gl.glVertex2f(0, 0);
@@ -57,9 +54,7 @@ public class Tile {
             gl.glEnd();
 
             gl.glDisable(GL.GL_TEXTURE_2D);
-
         } else {
-
             gl.glBegin(GL.GL_QUADS);
             gl.glVertex2f(0, 0);
             gl.glVertex2f(50, 0);
@@ -67,7 +62,6 @@ public class Tile {
             gl.glVertex2f(0, 50);
             gl.glEnd();
         }
-
         gl.glPopMatrix();
     }
 }
