@@ -55,7 +55,6 @@ public class Board extends JFrame {
             iconPause = new ImageIcon("src//Assets//Buttons//pause_btn.png");
             iconStart = new ImageIcon("src//Assets//Buttons//start_btn.png");
 
-            // Load back button - you can use menu_btn or create a specific back button image
             iconBack = resizeIcon("src//Assets//Buttons//Back_btn.png", 200, 60);
 
         } catch (Exception e) {
@@ -125,6 +124,13 @@ public class Board extends JFrame {
         JButton btnMenu = new JButton(iconMenu);
         makeButtonTransparent(btnMenu);
         btnMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        btnMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Sound.playClick();
+                showHighScores();
+            }
+        });
 
         JButton btnExit = new JButton(iconExit);
         makeButtonTransparent(btnExit);
@@ -263,17 +269,49 @@ public class Board extends JFrame {
         btnOnePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Sound.playClick();
-                setSize(420, 650);
-                setLocationRelativeTo(null);
 
-                gameManager.startGame(GameState.ONE_PLAYER, contentPane);
+                // Show username input dialog with custom styling
+                JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+                JLabel label = new JLabel("Enter your username:");
+                label.setFont(new Font("Arial", Font.BOLD, 14));
+                JTextField textField = new JTextField(15);
+                textField.setFont(new Font("Arial", Font.PLAIN, 14));
+
+                panel.add(label);
+                panel.add(textField);
+
+                int result = JOptionPane.showConfirmDialog(
+                        Board.this,
+                        panel,
+                        "Player Name",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                String username = textField.getText().trim();
+
+                // Check if user clicked OK and entered a name
+                if (result == JOptionPane.OK_OPTION && !username.isEmpty()) {
+                    setSize(615, 638);  // 600x600 game area + window borders
+                    setLocationRelativeTo(null);
+                    gameManager.startGame(GameState.ONE_PLAYER, contentPane, username);
+                } else if (result == JOptionPane.OK_OPTION && username.isEmpty()) {
+                    // If OK but empty, show error
+                    JOptionPane.showMessageDialog(
+                            Board.this,
+                            "Please enter a username!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+                // If cancelled, just stay on mode selection screen
             }
         });
 
         btnTwoPlayers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Sound.playClick();
-                setSize(840, 650);
+                setSize(1215, 638);  // Two 600x600 boards side by side
                 setLocationRelativeTo(null);
                 gameManager.startGame(GameState.TWO_PLAYERS, contentPane);
             }
@@ -282,9 +320,42 @@ public class Board extends JFrame {
         btnAI.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Sound.playClick();
-                setSize(420, 650);
-                setLocationRelativeTo(null);
-                gameManager.startGame(GameState.AI_MODE, contentPane);
+
+                // Show username input dialog with custom styling
+                JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+                JLabel label = new JLabel("Enter your username:");
+                label.setFont(new Font("Arial", Font.BOLD, 14));
+                JTextField textField = new JTextField(15);
+                textField.setFont(new Font("Arial", Font.PLAIN, 14));
+
+                panel.add(label);
+                panel.add(textField);
+
+                int result = JOptionPane.showConfirmDialog(
+                        Board.this,
+                        panel,
+                        "Player Name",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                String username = textField.getText().trim();
+
+                // Check if user clicked OK and entered a name
+                if (result == JOptionPane.OK_OPTION && !username.isEmpty()) {
+                    setSize(615, 638);  // 600x600 game area + window borders
+                    setLocationRelativeTo(null);
+                    gameManager.startGame(GameState.AI_MODE, contentPane, username);
+                } else if (result == JOptionPane.OK_OPTION && username.isEmpty()) {
+                    // If OK but empty, show error
+                    JOptionPane.showMessageDialog(
+                            Board.this,
+                            "Please enter a username!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+                // If cancelled, just stay on mode selection screen
             }
         });
 
@@ -298,6 +369,74 @@ public class Board extends JFrame {
         });
 
         contentPane.add(modePanel, BorderLayout.CENTER);
+        refreshScreen();
+    }
+
+    private void showHighScores() {
+        // Create high scores panel
+        JPanel scoresPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bgModeScreen != null) {
+                    g.drawImage(bgModeScreen, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        scoresPanel.setLayout(new BorderLayout());
+
+        // Title
+        JLabel title = new JLabel("HIGH SCORES", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 36));
+        title.setForeground(Color.YELLOW);
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        scoresPanel.add(title, BorderLayout.NORTH);
+
+        // Scores list
+        JPanel centerPanel = new JPanel();
+        centerPanel.setOpaque(false);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+        java.util.List<Utils.PlayerDataManager.HighScore> topScores =
+                Utils.PlayerDataManager.getTopScores(10);
+
+        if (topScores.isEmpty()) {
+            JLabel noScores = new JLabel("No scores yet! Play to set a record!");
+            noScores.setFont(new Font("Arial", Font.BOLD, 18));
+            noScores.setForeground(Color.WHITE);
+            noScores.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.add(noScores);
+        } else {
+            int rank = 1;
+            for (Utils.PlayerDataManager.HighScore score : topScores) {
+                JLabel scoreLabel = new JLabel(String.format(
+                        "%d. %s - %d points (Level %d)",
+                        rank++, score.username, score.score, score.level
+                ));
+                scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+                scoreLabel.setForeground(Color.WHITE);
+                scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                centerPanel.add(scoreLabel);
+                centerPanel.add(Box.createVerticalStrut(10));
+            }
+        }
+
+        scoresPanel.add(centerPanel, BorderLayout.CENTER);
+
+        // Back button
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        JButton backButton = new JButton(iconBack);
+        makeButtonTransparent(backButton);
+        backButton.addActionListener(e -> {
+            Sound.playClick();
+            showStartScreen();
+        });
+        buttonPanel.add(backButton);
+        scoresPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        contentPane.removeAll();
+        contentPane.add(scoresPanel, BorderLayout.CENTER);
         refreshScreen();
     }
 

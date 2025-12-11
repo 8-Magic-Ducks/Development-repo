@@ -35,8 +35,8 @@ public class Collision {
     }
 
     private static boolean checkDiagonal(Tile t1, Tile t2) {
-        int dx = Math.abs(t1.getX() - t2.getX());
-        int dy = Math.abs(t1.getY() - t2.getY());
+        int dx = (int)Math.abs(t1.getX() - t2.getX());
+        int dy = (int) Math.abs(t1.getY() - t2.getY());
         return dx == dy;
     }
 }

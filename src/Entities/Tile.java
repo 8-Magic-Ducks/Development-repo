@@ -31,6 +31,10 @@ public class Tile {
         this.isSafe = isSafe;
     }
 
+    public boolean isSafe() {
+        return isSafe;
+    }
+
     public void draw(GL gl) {
         gl.glPushMatrix();
         gl.glTranslatef(x * 50, y * 50, 0);
