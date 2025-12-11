@@ -11,8 +11,15 @@ public class GameManager {
 
     private GLCanvas glCanvas;
     private Animator animator;
+    private Player currentPlayer;
 
+    // Original method without username (for backward compatibility)
     public void startGame(GameState mode, Container contentPane) {
+        startGame(mode, contentPane, "Player 1");
+    }
+
+    // Main method with username parameter
+    public void startGame(GameState mode, Container contentPane, String username) {
 
         contentPane.removeAll();
 
@@ -22,16 +29,21 @@ public class GameManager {
 
 
         if (mode == GameState.ONE_PLAYER) {
-            OnePlayerGLListener oneP = new OnePlayerGLListener();
+            // Create player with the provided username
+            currentPlayer = new Player(username, 1);
+            OnePlayerGLListener oneP = new OnePlayerGLListener(currentPlayer);
             listener = oneP;
             input = new InputHandler(oneP.getDucks());
 
         } else if (mode == GameState.TWO_PLAYERS) {
+
             TwoPlayerGLListener twoP = new TwoPlayerGLListener();
             listener = twoP;
             input = new InputHandler(twoP.getAllDucks());
 
         } else if (mode == GameState.AI_MODE) {
+            // Create player for AI mode too
+            currentPlayer = new Player(username, 1);
             AIGLListener ai = new AIGLListener();
             listener = ai;
 
@@ -68,5 +80,11 @@ public class GameManager {
             contentPane.remove(glCanvas);
             glCanvas = null;
         }
+        currentPlayer = null;
+    }
+
+    // Get current player
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 }
