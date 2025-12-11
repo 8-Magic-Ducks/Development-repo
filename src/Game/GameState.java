@@ -1,4 +1,8 @@
 package Game;
 
-public class GameState {
+public enum GameState {
+    MENU,
+    ONE_PLAYER,
+    TWO_PLAYERS,
+    AI_MODE
 }
