@@ -47,10 +47,10 @@ public class Board extends JFrame {
             iconExit = resizeIcon("src//Assets//Buttons//exit_btn.png", 200, 60);
             iconMenu = resizeIcon("src//Assets//Buttons//menu_btn.png", 200, 60);
 
-            mode = resizeIcon("src//Assets//Buttons//GameMode.png", 300, 150);
-            iconOnePlayer = resizeIcon("src//Assets//Buttons//oneP.png", 300, 90);
-            iconTwoPlayers = resizeIcon("src//Assets//Buttons//twoP.png", 300, 90);
-            iconPlayerVSAI = resizeIcon("src//Assets//Buttons//VS.png", 300, 90);
+            mode = resizeIcon("src//Assets//Buttons//GameMode.png", 250, 100);
+            iconOnePlayer = resizeIcon("src//Assets//Buttons//oneP.png", 200, 60);
+            iconTwoPlayers = resizeIcon("src//Assets//Buttons//twoP.png", 200, 60);
+            iconPlayerVSAI  = resizeIcon("src//Assets//Buttons//VS.png", 200, 60);
 
             iconPause = new ImageIcon("src//Assets//Buttons//pause_btn.png");
             iconStart = new ImageIcon("src//Assets//Buttons//start_btn.png");

@@ -1,7 +1,6 @@
 package Game;
 
 import Entities.Tile;
-import Utils.Collision;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ public class AIPlayer {
     public List<Tile> getSolution() {
         return solution;
     }
+
     public boolean solve() {
         solution.clear();
         return solveRecursive(0);
@@ -39,7 +39,9 @@ public class AIPlayer {
 
     private boolean isSafeToPlace(Tile newQueen) {
         for (Tile placedQueen : solution) {
-            if (Collision.isAttacked(newQueen, solution)) {
+            if (placedQueen.getX() == newQueen.getX() ||
+                    placedQueen.getY() == newQueen.getY() ||
+                    Math.abs(placedQueen.getX() - newQueen.getX()) == Math.abs(placedQueen.getY() - newQueen.getY())) {
                 return false;
             }
         }
